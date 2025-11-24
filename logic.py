@@ -103,8 +103,7 @@ def run():
     if selection == "4":
         break
 
-load_data()
-print(transactions)
+
 run()
 
 
