@@ -48,12 +48,12 @@ def save_categories():
 
 
 def main_menu():
-    selection = input("what would you like to do? \n 1. Add transaction \n 2. Review transactions \n 3. Delete transaction \n 4. quit (please respond with 1, 2, 3, or 4)")
-    if selection not in {"1", "2", "3", "4"}:
+    selection = input("what would you like to do? \n 1. Add transaction \n 2. Review transactions \n 3. Delete transaction \n 4. Edit transaction \n 5. quit (please respond with 1, 2, 3, 4, or 5)")
+    if selection not in {"1", "2", "3", "4", "5"}:
         print("invalid input. Please try again.")
     return selection
 
-# Make two if statements that legit just link the correct list instead of having two if statements with damn near same logic to handle expense and income categories. Also use len() +1 instead of index for the last option #
+
 def category_selection(transaction_type, category):
     global expense_categories
     global income_categories
@@ -70,8 +70,8 @@ def category_selection(transaction_type, category):
     for index, cat_name in enumerate(category, start = 1):
         print(f"{index}. {cat_name}")
     print(len(category))
-    last_option = len(category)
-    last_option += 1
+    last_option = len(category) +1
+
 
     print(f"{last_option}.create new category")
     category_input_selection = input("please enter the number value of category you want to use for this transaction, or create a new one(last option in selection of categories).")
@@ -97,7 +97,7 @@ def add_transaction():
     elif transaction_type == "2":
         transaction_type = "Income"
 
-    #category = input("please input the category (i.e. food, gas, electric bill")
+
     category = ''
 
     category = category_selection(transaction_type, category)
@@ -130,22 +130,80 @@ def review_transaction():
         return
     for item in transactions:
 
-        print(x,".", f"Transaction Type: {item['transaction_type']} \n Category: {item['category']} \n Amount: {item['amount']} \n Date: {item['date']} \n Note: {item['note']} \n --------------------- ")
+        print(x, ".", f"Transaction Type: {item['transaction_type']} \n Category: {item['category']} \n Amount: {item['amount']} \n Date: {item['date']} \n Note: {item['note']} \n --------------------- ")
         x += 1
 
 
 def delete_transaction():
-    x = 1
-    for item in transactions:
+    review_transaction()
 
-        print(x, ".",
-              f"Transaction Type: {item['transaction_type']} \n Category: {item['category']} \n Amount: {item['amount']} \n Date: {item['date']} \n Note: {item['note']} \n --------------------- ")
-        x += 1
-    index_delete = input("please enter the number of the transaction you want to delete")
+    index_delete = input("Please enter the number of the transaction you want to delete")
     index_delete = int(index_delete)
     index_delete = index_delete - 1
 
     transactions.pop(index_delete)
+
+
+def edit_transaction():
+   global transactions
+
+
+
+
+   while True:
+    review_transaction()
+    edit_index_input = input("please input the # of transaction to edit")
+    index_edit = int(edit_index_input) - 1
+
+    data_change = input( "What would you like to edit? \n 1. Transaction Type \n 2. Category \n 3. Amount \n 4. Date \n 5. Note")
+
+    if data_change == "1":
+        current_type = transactions[index_edit]["transaction_type"]
+        confirm_edit = input(f"This transaction is currently labeled as {current_type}. Would you like to switch it to the other type? (y or n)")
+        if confirm_edit == "n":
+            print("so.... You didn't have anything to change then?")
+            break
+        if confirm_edit == "y" and current_type == "income":
+            edit = "expense"
+            transactions[index_edit]["transaction_type"] = edit
+        elif confirm_edit == "y" and current_type == "expense":
+            edit = "income"
+            transactions[index_edit]["transaction_type"] = edit
+
+    if data_change == "2":
+
+        category = ''
+        transaction_type = transactions[index_edit]["transaction_type"]
+        print(transaction_type)
+        category = category_selection(transaction_type, category)
+        transactions[index_edit]["category"] = category
+
+    if data_change == "3":
+        amount_string = input("please input the amount of transaction")
+        amount = float(amount_string)
+
+        transactions[index_edit]["amount"] = amount
+
+    if data_change == "4":
+        date = input("please input date like mm/dd/yyyy")
+        date_obj = datetime.strptime(date, "%m/%d/%Y")
+        formatted_date = date_obj.strftime("%Y-%m-%d")
+
+        transactions[index_edit]["date"] = formatted_date
+
+    if data_change == "5":
+        note = input("please input new note")
+        transactions[index_edit]["note"] = note
+
+
+
+    edit_more = input("Is there more you would like to edit? (y or n)")
+
+    if edit_more == "n":
+        break
+
+
+
 
 
 def run():
@@ -164,13 +222,18 @@ def run():
     if selection == "3":
        delete_transaction()
        save_transaction_data()
+
     if selection == "4":
+        edit_transaction()
+        save_transaction_data()
+        save_categories()
+
+    if selection == "5":
         save_transaction_data()
         save_categories()
         break
 
-print(expense_categories)
-print(income_categories)
+
 run()
 
 

@@ -1,10 +1,10 @@
 [
     {
-        "transaction_type": "income",
-        "category": "paycheck",
-        "amount": 1200.0,
-        "date": "2008-05-23",
-        "note": "paycheck"
+        "transaction_type": "Income",
+        "category": "investments",
+        "amount": 1.0,
+        "date": "2007-05-23",
+        "note": "test update note"
     },
     {
         "transaction_type": "Income",
@@ -22,37 +22,9 @@
     },
     {
         "transaction_type": "Expense",
-        "category": "",
+        "category": "gas",
         "amount": 100.0,
         "date": "2222-05-23",
         "note": "no"
-    },
-    {
-        "transaction_type": "Expense",
-        "category": "",
-        "amount": 500.0,
-        "date": "2222-05-23",
-        "note": "test"
-    },
-    {
-        "transaction_type": "Expense",
-        "category": "",
-        "amount": 500.0,
-        "date": "2000-05-23",
-        "note": "test"
-    },
-    {
-        "transaction_type": "Expense",
-        "category": "gas",
-        "amount": 500.0,
-        "date": "2222-05-23",
-        "note": "test"
-    },
-    {
-        "transaction_type": "Expense",
-        "category": "test3",
-        "amount": 500.0,
-        "date": "2222-05-23",
-        "note": "test3"
     }
 ]
