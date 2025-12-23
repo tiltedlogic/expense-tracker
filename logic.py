@@ -4,39 +4,24 @@
 from datetime import datetime
 import json
 
-transactions = [
- #example -
-    #{"transaction_type" : "expense",
-    #{"category" : "food",
-    #"amount" : 11.15,
-    # "date" : "11/17/2025"
-    # "note" : "...."
-    # }
-]
-
-income_categories = []
-expense_categories = []
-
 
 def load_transaction_data():
-    global transactions
     with open("transaction_data.json", "r") as file:
-        transactions = json.load(file)
+
+        return json.load(file)
 
 
-def save_transaction_data():
+def save_transaction_data(transaction_list):
     with open("transaction_data.json", "w") as file:
-        json.dump(transactions, file, indent=4)
+        json.dump(transaction_list, file, indent=4)
 
 
 def load_categories():
-    global income_categories
-    global expense_categories
     with open("categories.json", "r") as file:
         data = json.load(file)
 
-    income_categories = data["income"]
-    expense_categories = data["expense"]
+    return data["income"], data["expense"]
+
 
 def save_categories():
     with open("categories.json", "w") as file:
@@ -48,59 +33,66 @@ def save_categories():
 
 
 def main_menu():
-    selection = input("what would you like to do? \n 1. Add transaction \n 2. Review transactions \n 3. Delete transaction \n 4. Edit transaction \n 5. quit (please respond with 1, 2, 3, 4, or 5)")
+    selection = input("what would you like to do? "
+                      "\n 1. Add transaction "
+                      "\n 2. Review transactions "
+                      "\n 3. Delete transaction "
+                      "\n 4. Edit transaction "
+                      "\n 5. Quit "
+                      "(please respond with 1, 2, 3, 4, or 5)"
+    )
+
     if selection not in {"1", "2", "3", "4", "5"}:
-        print("invalid input. Please try again.")
+        print("Invalid input. Please try again.")
+
     return selection
 
 
-def category_selection(transaction_type, category):
-    global expense_categories
-    global income_categories
-    print(transaction_type)
-    if transaction_type == "Expense":
-        category = expense_categories
-    elif transaction_type == "Income":
-        category = income_categories
+def category_selection(transaction_type, income_list, expense_list):
+    if transaction_type == "expense":
+        category = expense_list
+    elif transaction_type == "income":
+        category = income_list
     else:
-        print("an error has occurred please try again.")
-        run()
+        print("An error has occurred please try again.")
+        return None
 
-    print(category)
-    for index, cat_name in enumerate(category, start = 1):
+    for index, cat_name in enumerate(category, start=1):
         print(f"{index}. {cat_name}")
-    print(len(category))
-    last_option = len(category) +1
 
+    last_option = len(category) + 1
+    print(f"{last_option}. Create new category")
 
-    print(f"{last_option}.create new category")
-    category_input_selection = input("please enter the number value of category you want to use for this transaction, or create a new one(last option in selection of categories).")
+    category_input_selection = input("please enter the number value of category you"
+                                     " want to use for this transaction, or create a"
+                                     " new one(last option in selection of categories)."
+    )
+
     category_input = int(category_input_selection)
-    print(category_input)
-    print(last_option)
+
     if category_input == last_option:
-         new_category = input("please input new category name")
-         category.append(new_category)
-         category = new_category
-         return category
+        new_category = input("please input new category name")
+
+        category.append(new_category)
+        return new_category
     else:
-        category = category[category_input - 1]
-        return category
+        return category[category_input - 1]
 
 
+def add_transaction(transaction_list, income_list, expense_list):
+    bucket = ''
 
+    transaction_type = input("please input the type of transaction "
+                             "\n 1. Expense "
+                             "\n 2. Income"
+    )
 
-def add_transaction():
-    transaction_type = input("please input the type of transaction \n 1. Expense \n 2. Income")
     if transaction_type == "1":
-        transaction_type = "Expense"
+        transaction_type = "expense"
     elif transaction_type == "2":
-        transaction_type = "Income"
+        transaction_type = "income"
 
-
-    category = ''
-
-    category = category_selection(transaction_type, category)
+    category = category_selection(transaction_type, income_list, expense_list)
 
     amount_string = input("please input the amount of transaction")
     amount = float(amount_string)
@@ -111,130 +103,196 @@ def add_transaction():
 
     note = input("any additional details for personal tracking")
 
-    new_data = {
-        "transaction_type": transaction_type,
-        "category": category,
-        "amount": amount,
-        "date": formatted_date,
-        "note": note
-    }
+    if transaction_type == "expense":
+        raw = input("What is this transaction?"
+                    "\n 1. Need"
+                    "\n 2. Want"
+                    "\n 3. Savings"
+        )
 
-    transactions.append(new_data)
+        if raw == "1":
+            bucket = "needs"
+        if raw == "2":
+            bucket = "wants"
+        if raw == "3":
+            bucket = "savings"
+
+        new_data = {
+            "transaction_type": transaction_type,
+            "category": category,
+            "bucket": bucket,
+            "amount": amount,
+            "date": formatted_date,
+            "note": note
+        }
+
+    else:
+        new_data = {
+            "transaction_type": transaction_type,
+            "category": category,
+            "bucket": "income",
+            "amount": amount,
+            "date": formatted_date,
+            "note": note
+        }
+
+    transaction_list.append(new_data)
 
 
-
-def review_transaction():
-    x = 1
-    if not transactions:
+def review_transaction(transaction_list):
+    if not transaction_list:
         print("you can not view transactions because you have none!")
         return
-    for item in transactions:
 
-        print(x, ".", f"Transaction Type: {item['transaction_type']} \n Category: {item['category']} \n Amount: {item['amount']} \n Date: {item['date']} \n Note: {item['note']} \n --------------------- ")
-        x += 1
+    for x, item in enumerate(transactions, 1):
+        print(x, ".", f"Transaction Type: {item['transaction_type']} \n Category: {item['category']} \n Bucket: {item['bucket']} \n Amount: {item['amount']} \n Date: {item['date']} \n Note: {item['note']} \n --------------------- ")
 
 
-def delete_transaction():
-    review_transaction()
+def delete_transaction(transaction_list):
+    review_transaction(transaction_list)
 
     index_delete = input("Please enter the number of the transaction you want to delete")
     index_delete = int(index_delete)
     index_delete = index_delete - 1
-
-    transactions.pop(index_delete)
-
-
-def edit_transaction():
-   global transactions
+    transaction_list.pop(index_delete)
 
 
+def edit_transaction(transaction_list, income_list, expense_list):
+    review_transaction(transaction_list)
 
-
-   while True:
-    review_transaction()
     edit_index_input = input("please input the # of transaction to edit")
     index_edit = int(edit_index_input) - 1
 
-    data_change = input( "What would you like to edit? \n 1. Transaction Type \n 2. Category \n 3. Amount \n 4. Date \n 5. Note")
+    data_change = input( "What would you like to edit? "
+                         "\n 1. Transaction Type "
+                         "\n 2. Category "
+                         "\n 3. Bucket "
+                         "\n 4. Amount "
+                         "\n 5. Date "
+                         "\n 6. Note"
+    )
 
     if data_change == "1":
-        current_type = transactions[index_edit]["transaction_type"]
-        confirm_edit = input(f"This transaction is currently labeled as {current_type}. Would you like to switch it to the other type? (y or n)")
+        current_type = transaction_list[index_edit]["transaction_type"]
+
+        confirm_edit = input(f"This transaction is currently labeled as "
+                             f"{current_type}. Would you like to switch it to the other type? (y or n)"
+        )
+
         if confirm_edit == "n":
             print("so.... You didn't have anything to change then?")
-            break
+            return
+
         if confirm_edit == "y" and current_type == "income":
             edit = "expense"
-            transactions[index_edit]["transaction_type"] = edit
+
+            bucket_input = input("What bucked should this transaction go under?"
+                                 "\n 1. Need "
+                                 "\n 2. Want "
+                                 "\n 3. Savings"
+            )
+
+            if bucket_input == "1":
+                bucket = "needs"
+            if bucket_input == "2":
+                bucket = "wants"
+            if bucket_input == "3":
+                bucket = "savings"
+
+            transaction_list[index_edit]["transaction_type"] = edit
+
+            transaction_list[index_edit]["bucket"] = bucket
+
         elif confirm_edit == "y" and current_type == "expense":
             edit = "income"
-            transactions[index_edit]["transaction_type"] = edit
+            bucket = "income"
+
+            transaction_list[index_edit]["transaction_type"] = edit
+
+            transaction_list[index_edit]["bucket"] = bucket
 
     if data_change == "2":
+        transaction_type = transaction_list[index_edit]["transaction_type"]
 
-        category = ''
-        transaction_type = transactions[index_edit]["transaction_type"]
-        print(transaction_type)
-        category = category_selection(transaction_type, category)
-        transactions[index_edit]["category"] = category
+        category = category_selection(transaction_type,income_list, expense_list,)
+        transaction_list[index_edit]["category"] = category
 
     if data_change == "3":
+        if transaction_list[index_edit]["transaction_type"] == "expense":
+            options = ["needs", "wants", "savings"]
+            current = transaction_list[index_edit]["bucket"]
+            options.remove(current)
+
+            bucket = input(
+                f"This transaction is currently labeled as {current}. What would you like to change it to? "
+                f"\n 1. {options[0]} "
+                f"\n 2. {options[1]} "
+                f"\n 3. Cancel"
+            )
+
+            if bucket == "3":
+                return
+            elif bucket == "1":
+                transaction_list[index_edit]["bucket"] = options[0]
+            elif bucket == "2":
+                transaction_list[index_edit]["bucket"] = options[1]
+
+        else:
+            print("You can not change bucket type on income transactions "
+                  "as they don't have a specific bucket besides income"
+            )
+
+    if data_change == "4":
         amount_string = input("please input the amount of transaction")
         amount = float(amount_string)
 
-        transactions[index_edit]["amount"] = amount
+        transaction_list[index_edit]["amount"] = amount
 
-    if data_change == "4":
+    if data_change == "5":
         date = input("please input date like mm/dd/yyyy")
         date_obj = datetime.strptime(date, "%m/%d/%Y")
         formatted_date = date_obj.strftime("%Y-%m-%d")
 
-        transactions[index_edit]["date"] = formatted_date
+        transaction_list[index_edit]["date"] = formatted_date
 
-    if data_change == "5":
+    if data_change == "6":
         note = input("please input new note")
-        transactions[index_edit]["note"] = note
+        transaction_list[index_edit]["note"] = note
 
 
+def run(transaction_list, income_list, expense_list):
+    while True:
+        selection = main_menu()
 
-    edit_more = input("Is there more you would like to edit? (y or n)")
+        if selection == "1":
+            add_transaction(transaction_list, income_list, expense_list)
+            save_transaction_data(transaction_list)
+            save_categories()
 
-    if edit_more == "n":
-        break
+        elif selection == "2":
+            review_transaction(transaction_list)
 
+        elif selection == "3":
+            delete_transaction(transaction_list)
+            save_transaction_data(transaction_list)
 
+        elif selection == "4":
+            edit_transaction(transaction_list, income_list, expense_list)
+            save_transaction_data(transaction_list)
+            save_categories()
 
-
-
-def run():
-   load_transaction_data()
-   load_categories()
-   while True:
-    selection = main_menu()
-
-    if selection == "1":
-        add_transaction()
-        save_transaction_data()
-        save_categories()
-    if selection == "2":
-        review_transaction()
-
-    if selection == "3":
-       delete_transaction()
-       save_transaction_data()
-
-    if selection == "4":
-        edit_transaction()
-        save_transaction_data()
-        save_categories()
-
-    if selection == "5":
-        save_transaction_data()
-        save_categories()
-        break
+        elif selection == "5":
+            save_transaction_data(transaction_list)
+            save_categories()
+            break
 
 
-run()
+transactions = load_transaction_data()
+
+income_categories, expense_categories = load_categories()
+
+
+run(transactions, income_categories, expense_categories)
 
 
 

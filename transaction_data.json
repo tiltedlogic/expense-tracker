@@ -1,30 +1,250 @@
 [
     {
         "transaction_type": "Income",
-        "category": "investments",
-        "amount": 1.0,
-        "date": "2007-05-23",
-        "note": "test update note"
+        "category": "job",
+        "bucket": "N/A",
+        "amount": 450.0,
+        "date": "2025-01-05",
+        "note": "weekly paycheck"
     },
     {
-        "transaction_type": "Income",
-        "category": "gas",
-        "amount": 3000.0,
-        "date": "2222-05-23",
-        "note": "note"
-    },
-    {
-        "transaction_type": "Income",
-        "category": "gas",
-        "amount": 3000.0,
-        "date": "2222-05-23",
-        "note": "note"
+        "transaction_type": "Expense",
+        "category": "food",
+        "bucket": "needs",
+        "amount": 23.47,
+        "date": "2025-01-06",
+        "note": "lunch at work"
     },
     {
         "transaction_type": "Expense",
         "category": "gas",
+        "bucket": "needs",
+        "amount": 41.82,
+        "date": "2025-01-07",
+        "note": "filled up tank"
+    },
+    {
+        "transaction_type": "Income",
+        "category": "side_hustle",
+        "bucket": "N/A",
+        "amount": 120.0,
+        "date": "2025-01-08",
+        "note": "small freelance job"
+    },
+    {
+        "transaction_type": "Expense",
+        "category": "entertainment",
+        "bucket": "needs",
+        "amount": 15.99,
+        "date": "2025-01-09",
+        "note": "movie rental"
+    },
+    {
+        "transaction_type": "Expense",
+        "category": "subscriptions",
+        "bucket": "needs",
+        "amount": 9.99,
+        "date": "2025-01-10",
+        "note": "music subscription"
+    },
+    {
+        "transaction_type": "Income",
+        "category": "investments",
+        "bucket": "N/A",
+        "amount": 67.35,
+        "date": "2025-01-12",
+        "note": "dividend payout"
+    },
+    {
+        "transaction_type": "Expense",
+        "category": "food",
+        "bucket": "needs",
+        "amount": 72.18,
+        "date": "2025-01-13",
+        "note": "grocery run"
+    },
+    {
+        "transaction_type": "Expense",
+        "category": "shopping",
+        "bucket": "needs",
+        "amount": 89.99,
+        "date": "2025-01-14",
+        "note": "new hoodie"
+    },
+    {
+        "transaction_type": "Income",
+        "category": "job",
+        "bucket": "N/A",
+        "amount": 475.0,
+        "date": "2025-01-19",
+        "note": "overtime included"
+    },
+    {
+        "transaction_type": "Expense",
+        "category": "gas",
+        "bucket": "needs",
+        "amount": 38.64,
+        "date": "2025-01-20",
+        "note": "fuel"
+    },
+    {
+        "transaction_type": "Expense",
+        "category": "utilities",
+        "bucket": "needs",
+        "amount": 112.5,
+        "date": "2025-01-21",
+        "note": "electric bill"
+    },
+    {
+        "transaction_type": "Income",
+        "category": "gift",
+        "bucket": "N/A",
         "amount": 100.0,
+        "date": "2025-01-22",
+        "note": "birthday money"
+    },
+    {
+        "transaction_type": "Expense",
+        "category": "food",
+        "bucket": "needs",
+        "amount": 18.76,
+        "date": "2025-01-23",
+        "note": "fast food"
+    },
+    {
+        "transaction_type": "Expense",
+        "category": "car",
+        "bucket": "needs",
+        "amount": 250.0,
+        "date": "2025-01-25",
+        "note": "maintenance"
+    },
+    {
+        "transaction_type": "Income",
+        "category": "refund",
+        "bucket": "N/A",
+        "amount": 42.19,
+        "date": "2025-01-27",
+        "note": "returned item"
+    },
+    {
+        "transaction_type": "Expense",
+        "category": "entertainment",
+        "bucket": "want",
+        "amount": 29.99,
+        "date": "2025-01-28",
+        "note": "game purchase"
+    },
+    {
+        "transaction_type": "Income",
+        "category": "job",
+        "bucket": "N/A",
+        "amount": 460.0,
+        "date": "2025-02-02",
+        "note": "weekly paycheck"
+    },
+    {
+        "transaction_type": "Expense",
+        "category": "rent",
+        "bucket": "needs",
+        "amount": 850.0,
+        "date": "2025-02-03",
+        "note": "monthly rent"
+    },
+    {
+        "transaction_type": "Expense",
+        "category": "food",
+        "bucket": "needs",
+        "amount": 64.22,
+        "date": "2025-02-04",
+        "note": "groceries"
+    },
+    {
+        "transaction_type": "Expense",
+        "category": "personal hygiene",
+        "bucket": "need",
+        "amount": 500.0,
+        "date": "2008-05-23",
+        "note": "shampoo"
+    },
+    {
+        "transaction_type": "Expense",
+        "category": "gas",
+        "bucket": "needs",
+        "amount": 500.0,
+        "date": "2000-05-23",
+        "note": "note"
+    },
+    {
+        "transaction_type": "expense",
+        "category": "food",
+        "bucket": "needs",
+        "amount": 500.0,
+        "date": "2333-05-23",
+        "note": "test"
+    },
+    {
+        "transaction_type": "income",
+        "category": "paycheck",
+        "bucket": "n/A",
+        "amount": 500.0,
+        "date": "2000-05-23",
+        "note": "note"
+    },
+    {
+        "transaction_type": "expense",
+        "category": "gas",
+        "bucket": "needs",
+        "amount": 500.0,
         "date": "2222-05-23",
-        "note": "no"
+        "note": "test"
+    },
+    {
+        "transaction_type": "expense",
+        "category": "test",
+        "bucket": "needs",
+        "amount": 500.0,
+        "date": "2000-05-23",
+        "note": "test"
+    },
+    {
+        "transaction_type": "expense",
+        "category": "food",
+        "bucket": "test",
+        "amount": 500.0,
+        "date": "2222-05-23",
+        "note": "test"
+    },
+    {
+        "transaction_type": "income",
+        "category": "test2",
+        "bucket": "needs",
+        "amount": 500.0,
+        "date": "2222-05-23",
+        "note": "t"
+    },
+    {
+        "transaction_type": "income",
+        "category": "food",
+        "bucket": "needs",
+        "amount": 500.0,
+        "date": "2222-05-22",
+        "note": "bucket edit testing"
+    },
+    {
+        "transaction_type": "expense",
+        "category": "refund",
+        "bucket": "savings",
+        "amount": 500.0,
+        "date": "3333-05-23",
+        "note": "test"
+    },
+    {
+        "transaction_type": "expense",
+        "category": "testtestset",
+        "bucket": "needs",
+        "amount": 500.0,
+        "date": "2222-05-22",
+        "note": "test"
     }
 ]
