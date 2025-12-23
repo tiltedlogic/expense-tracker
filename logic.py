@@ -47,15 +47,11 @@ def main_menu():
 
     return selection
 
-
 def category_selection(transaction_type, income_list, expense_list):
     if transaction_type == "expense":
         category = expense_list
     elif transaction_type == "income":
         category = income_list
-    else:
-        print("An error has occurred please try again.")
-        return None
 
     for index, cat_name in enumerate(category, start=1):
         print(f"{index}. {cat_name}")
@@ -91,6 +87,9 @@ def add_transaction(transaction_list, income_list, expense_list):
         transaction_type = "expense"
     elif transaction_type == "2":
         transaction_type = "income"
+    else:
+        print("Invalid transaction type. Please Try again.")
+        return
 
     category = category_selection(transaction_type, income_list, expense_list)
 
