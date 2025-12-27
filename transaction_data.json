@@ -246,5 +246,13 @@
         "amount": 500.0,
         "date": "2222-05-22",
         "note": "test"
+    },
+    {
+        "transaction_type": "income",
+        "category": "paycheck",
+        "bucket": "income",
+        "amount": 1000.0,
+        "date": "2004-06-14",
+        "note": "n"
     }
 ]
