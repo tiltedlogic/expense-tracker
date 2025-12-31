@@ -3,6 +3,67 @@
 
 from datetime import datetime
 import json
+import sqlite3
+
+
+conn = sqlite3.connect("transactions.db")
+c = conn.cursor()
+
+
+def create_trans_table():
+    with conn:
+        c.execute("""CREATE TABLE IF NOT EXISTS transactions(
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                transaction_type TEXT,
+                category TEXT,
+                bucket TEXT,
+                amount REAL,
+                date TEXT,
+                note TEXT
+        )""")
+
+def create_cat_table():
+    with conn:
+        c.execute("""CREATE TABLE IF NOT EXISTS income_categories(
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                category TEXT UNIQUE
+        )""")
+        c.execute("""CREATE TABLE IF NOT EXISTS expense_categories(
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                category TEXT UNIQUE
+        )""")
+
+    try:
+        income_cats = [
+            ("Income",),
+            ("Investments",),
+            ("Refund",)
+        ]
+        with conn:
+            c.executemany("INSERT INTO income_categories (category) VALUES (?)",
+                        income_cats)
+
+            expense_cats = [
+                ("gas",),
+                ("food",),
+                ("lifestyle",),
+                ("personal hygiene",)
+            ]
+            c.executemany("INSERT INTO expense_categories(category) VALUES (?)",
+                        expense_cats)
+    except sqlite3.IntegrityError:
+        pass # defaults already exist
+
+
+def insert_transaction(transaction_type, category, bucket, amount, formatted_date, note):
+    new_data = (transaction_type, category, bucket, amount, formatted_date, note)
+    with conn:
+        c.execute("INSERT INTO employees VALUES (?, ?, ?, ?, ?, ?)", new_data)
+
+#c.execute("SELECT * FROM transactions")
+#print(c.fetchall())
+
+conn.commit()
 
 
 def load_transaction_data():
@@ -75,7 +136,7 @@ def category_selection(transaction_type, income_list, expense_list):
         return category[category_input - 1]
 
 
-def add_transaction(transaction_list, income_list, expense_list):
+def add_transaction(transaction_type, category, bucket, amount, formatted_date, note, income_list, expense_list):
     bucket = ''
 
     transaction_type = input("please input the type of transaction "
@@ -116,34 +177,20 @@ def add_transaction(transaction_list, income_list, expense_list):
         if raw == "3":
             bucket = "savings"
 
-        new_data = {
-            "transaction_type": transaction_type,
-            "category": category,
-            "bucket": bucket,
-            "amount": amount,
-            "date": formatted_date,
-            "note": note
-        }
+        add_transaction(transaction_type, category, bucket, amount, formatted_date, note, income_list, expense_list)
 
     else:
-        new_data = {
-            "transaction_type": transaction_type,
-            "category": category,
-            "bucket": "income",
-            "amount": amount,
-            "date": formatted_date,
-            "note": note
-        }
+        bucket = "income"
+        add_transaction(transaction_type, category, bucket, amount, formatted_date, note, income_list, expense_list)
 
-    transaction_list.append(new_data)
 
 
 def review_transaction(transaction_list):
     if not transaction_list:
         print("you can not view transactions because you have none!")
-        return
 
-    for x, item in enumerate(transactions, 1):
+
+    for x, item in enumerate(transaction_list, 1):
         print(x, ".", f"Transaction Type: {item['transaction_type']} \n Category: {item['category']} \n Bucket: {item['bucket']} \n Amount: {item['amount']} \n Date: {item['date']} \n Note: {item['note']} \n --------------------- ")
 
 
@@ -260,6 +307,8 @@ def edit_transaction(transaction_list, income_list, expense_list):
 
 
 def run(transaction_list, income_list, expense_list):
+    create_trans_table()
+    create_cat_table()
     while True:
         selection = main_menu()
 
@@ -283,17 +332,13 @@ def run(transaction_list, income_list, expense_list):
         elif selection == "5":
             save_transaction_data(transaction_list)
             save_categories()
+            conn.close()
             break
 
 
-transactions = load_transaction_data()
+transaction_list = load_transaction_data()
 
 income_categories, expense_categories = load_categories()
 
 
-run(transactions, income_categories, expense_categories)
-
-
-
-
-
+run(transaction_list, income_categories, expense_categories)
